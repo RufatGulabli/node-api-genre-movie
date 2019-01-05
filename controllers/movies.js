@@ -62,7 +62,28 @@ router.put('/:id', async (req, res) => {
     const error = isValidMovie(req.body, req.body.genre);
     if (error) return res.status(404).send(error.details[0].message);
     let { numberInStock, dailyRentalRate, title } = req.body;
+    numberInStock = numberInStock === undefined ? 0 : numberInStock;
+    dailyRentalRate = dailyRentalRate === undefined ? 0 : dailyRentalRate;
     let { name, description } = req.body.genre;
+
+    try {
+        const result = await Movie.findOneAndUpdate({ _id: req.params.id }, {
+            numberInStock: numberInStock,
+            dailyRentalRate: dailyRentalRate,
+            title: title,
+            genre: {
+                name: name,
+                description: description
+            }
+        }, { new: true });
+        if (!result) return res.status(404).json(`Movie with the id ${req.params.id} not found.`);
+        return res.json(result);
+    } catch (err) {
+        return res.status(404).json({
+            errorCode: 1,
+            message: err
+        });
+    }
 
 });
 

@@ -5,17 +5,25 @@ const { genreSchema, isValidGenre } = require('./genre');
 const Movie = mongoose.model('Movie', new mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     numberInStock: {
+        min: 0,
+        max: 255,
         type: Number,
         default: 0
     },
     dailyRentalRate: {
         type: Number,
+        min: 0,
+        max: 255,
         default: 0
     },
-    genre: genreSchema
+    genre: {
+        type: genreSchema,
+        required: true
+    }
 }));
 
 function isValidInput(movie, genre) {
