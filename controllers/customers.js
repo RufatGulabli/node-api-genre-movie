@@ -1,14 +1,9 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const { Customer, isValidCustomer } = require('../model/customer');
-const bodyParser = require('body-parser');
-
-mongoose.connect('mongodb://localhost/hometask', { useNewUrlParser: true })
-    .then(() => console.log("Connected to MongoDB..."))
-    .catch(err => console.log(err.message));
+// const bodyParser = require('body-parser');
 
 const router = express.Router();
-router.use(bodyParser.json());
+// router.use(bodyParser.json());
 
 
 /*============================ HTTP Methods ====================================*/

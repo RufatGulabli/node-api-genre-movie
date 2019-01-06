@@ -1,15 +1,15 @@
 const express = require('express');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const { Movie, isValidMovie } = require('../model/movie');
 const { Genre, isValidGenre } = require('../model/genre');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
-mongoose.connect('mongodb://localhost/hometask', { useNewUrlParser: true })
-    .then(() => console.log("Connected to MongoDB..."))
-    .catch(err => console.log(err.message));
+// mongoose.connect('mongodb://localhost/hometask', { useNewUrlParser: true })
+//     .then(() => console.log("Connected to MongoDB..."))
+//     .catch(err => console.log(err.message));
 
 const router = express.Router();
-router.use(bodyParser.json());
+// router.use(bodyParser.json());
 
 /*============================ HTTP Methods ====================================*/
 
