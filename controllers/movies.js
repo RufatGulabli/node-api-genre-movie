@@ -1,19 +1,11 @@
 const express = require('express');
 const Fawn = require('fawn');
-// const mongoose = require('mongoose');
 const { Movie, isValidMovie } = require('../model/movie');
 const { Genre } = require('../model/genre');
-// const bodyParser = require('body-parser');
-
-// mongoose.connect('mongodb://localhost/hometask', { useNewUrlParser: true })
-//     .then(() => console.log("Connected to MongoDB..."))
-//     .catch(err => console.log(err.message));
 
 const router = express.Router();
-// router.use(bodyParser.json());
 
 /*============================ HTTP Methods ====================================*/
-
 router.get('/', async (req, res) => {
     try {
         const movies = await Movie.find().sort({ name: 1 });
@@ -34,7 +26,7 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    const error  = isValidMovie(req.body);
+    const error = isValidMovie(req.body);
     if (error) return res.status(404).json(error.details[0].message);
 
     let { title, numberInStock, dailyRentalRate, genre } = req.body;
