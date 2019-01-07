@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const Joi = require('joi');
+const PasswordComplexity = require('joi-password-complexity');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -38,12 +39,15 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 function isValidUser(user){
+
     const schema = {
         name : Joi.string().min(5).max(50).required(),
         email: Joi.string().min(5).max(255).email().required(),
         password: Joi.string().min(5).max(255).required()
     }
-    return Joi.validate(user, schema);
+    let generalError = Joi.validate(user, schema).error;
+    let passwordError = Joi.validate(user.password, new PasswordComplexity()).error;
+    return generalError || passwordError;
 }
 
 module.exports = {
