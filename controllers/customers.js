@@ -43,8 +43,8 @@ router.post('/', async (req, res) => {
         phone: phone
     });
     try {
-        const result = await customer.save();
-        return res.json(result);
+        await customer.save();
+        return res.json(customer);
     } catch (err) {
         return res.json(err);
     }

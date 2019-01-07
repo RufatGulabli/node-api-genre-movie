@@ -1,8 +1,12 @@
 const { Rental, validateRental } = require('../model/rental');
 const { Movie } = require('../model/movie');
 const { Customer } = require('../model/customer');
+const mongoose = require('mongoose');
 const express = require('express');
+const Fawn = require('fawn');
 const router = express.Router();
+
+Fawn.init(mongoose);
 
 router.get('/', async (req, res) => {
     try {
@@ -38,11 +42,30 @@ router.post('/', async (req, res) => {
         }
     });
     try {
-        rental = await rental.save();
-        movie.numberInStock--;
-        movie.save;
-        return res.json(rental);
+        // rental = await rental.save();
+        // movie.numberInStock--;
+        // movie.save;
+
+        /* Transaction => 2 Phase Commit implementation in MongoDB */
+        try {
+
+            await new Fawn.Task()
+                .save('rentals', rental)
+                .update('movies', {
+                    _id: movie._id
+                }, {
+                        $inc: { numberInStock: -1 }
+                    })
+                .run();
+                
+            return res.json(rental);
+
+        } catch (err) {
+            res.status(500).json('Internal Server Error.');
+        }
     } catch (err) {
         res.status(400).json(err.message);
     }
 });
+
+module.exports = router;

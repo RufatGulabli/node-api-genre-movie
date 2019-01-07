@@ -1,7 +1,8 @@
 const express = require('express');
+const Fawn = require('fawn');
 // const mongoose = require('mongoose');
 const { Movie, isValidMovie } = require('../model/movie');
-const { Genre, isValidGenre } = require('../model/genre');
+const { Genre } = require('../model/genre');
 // const bodyParser = require('body-parser');
 
 // mongoose.connect('mongodb://localhost/hometask', { useNewUrlParser: true })
@@ -33,7 +34,7 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    const { error } = isValidMovie(req.body);
+    const error  = isValidMovie(req.body);
     if (error) return res.status(404).json(error.details[0].message);
 
     let { title, numberInStock, dailyRentalRate, genre } = req.body;
@@ -42,18 +43,23 @@ router.post('/', async (req, res) => {
         description: genre.description
     });
 
-    let movie = new Movie({
+    const movie = new Movie({
         title: title,
         numberInStock: numberInStock,
         dailyRentalRate: dailyRentalRate,
         genre: newGenre
     });
     try {
-        const result = await movie.save();
-        await newGenre.save();
-        return res.json(result);
+        // Imitation of SQL Transactions
+        await new Fawn.Task()
+            .save(movie)
+            .save(genre)
+            .run();
+        // await movie.save();
+        // await newGenre.save();
+        return res.json(movie);
     } catch (err) {
-        return res.status(404).json(err.message);
+        res.status(500).json('Internal Server Error.');
     }
 });
 

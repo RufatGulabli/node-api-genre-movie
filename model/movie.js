@@ -31,7 +31,7 @@ function isValidInput(movie, genre) {
         title: Joi.string().min(3).max(30).required(),
         numberInStock: Joi.number().min(0).optional(),
         dailyRentalRate: Joi.number().min(0).optional(),
-        genre: Joi.required()
+        genre: Joi.objectId().required()
     };
     const movieError = Joi.validate(movie, joiSchema).error;
     const genreError = isValidGenre(genre).error;
