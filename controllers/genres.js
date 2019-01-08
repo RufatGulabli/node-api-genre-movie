@@ -1,14 +1,9 @@
 const express = require('express');
-// const mongoose = require('mongoose');
 const { Genre, isValidGenre } = require('../model/genre');
-const bodyParser = require('body-parser');
-
-// mongoose.connect('mongodb://localhost/hometask', { useNewUrlParser: true })
-//     .then(() => console.log("Connected to MongoDB..."))
-//     .catch(err => console.log(err.message));
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
 const router = express.Router();
-// router.use(bodyParser.json());
 
 /*============================ HTTP Methods ====================================*/
 router.get('/', async (req, res) => {
@@ -40,7 +35,7 @@ router.get('/:id', async (req, res) => {
     //      .catch(err => res.json(err.message));
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const { error } = isValidGenre(req.body);
     if (error) return res.status(404).send(error.details[0].message);
 
@@ -66,7 +61,7 @@ router.post('/', async (req, res) => {
     // });
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     const { error } = isValidGenre(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     let { name, description } = req.body;
@@ -84,7 +79,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
     try {
         const result = await Genre.findOneAndDelete({ _id: req.params.id });
         res.json(result);

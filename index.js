@@ -12,8 +12,8 @@ const mongoose = require('mongoose');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 
-if (!config.get('jwtPrivateKey')) {
-    console.error('FATAL ERROR: jwtPrivateKey not defined.');
+if (!config.get('JWT')) {
+    console.error('FATAL ERROR : \'JWT\' Environment Variable is not defined.');
     process.exit(1);
 }
 
@@ -31,7 +31,6 @@ app.use('/api/rentals', rentals);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 
-const port = process.env.NODE_ENV || 3000;
-app.set('port', port);
+const port = config.get('PORT') || 3000;
 
 app.listen(port, () => console.log(`Server is running on port ${port}...`));
