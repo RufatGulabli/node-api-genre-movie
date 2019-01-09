@@ -12,8 +12,8 @@ router.get('/', async (req, res) => {
     try {
         const rentals = await Rental.find().sort({ dateOut: -1 });
         return res.json(rentals);
-    } catch (err) {
-        return res.status(400).json(err.message);
+    } catch (exc) {
+        next(exc);
     }
 });
 
@@ -63,8 +63,8 @@ router.post('/', async (req, res) => {
         } catch (err) {
             res.status(500).json('Internal Server Error.');
         }
-    } catch (err) {
-        res.status(400).json(err.message);
+    } catch (exc) {
+        next(exc);
     }
 });
 

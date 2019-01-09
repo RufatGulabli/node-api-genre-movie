@@ -10,8 +10,8 @@ router.get('/', async (req, res) => {
     try {
         const movies = await Movie.find().sort({ name: 1 });
         return res.json(movies);
-    } catch (err) {
-        return res.status(404).json('Bad Request');
+    } catch (exc) {
+        next(exc);
     }
 });
 
@@ -20,8 +20,8 @@ router.get('/:id', async (req, res) => {
         const movie = await Movie.findById({ _id: req.params.id });
         if (!movie) return res.json(`Movie with ID=${req.params.id} not found`)
         return res.json(movie);
-    } catch (err) {
-        return res.status(404).json(err.message);
+    } catch (exc) {
+        next(exc);
     }
 })
 
@@ -50,8 +50,8 @@ router.post('/', async (req, res) => {
         // await movie.save();
         // await newGenre.save();
         return res.json(movie);
-    } catch (err) {
-        res.status(500).json('Internal Server Error.');
+    } catch (exc) {
+        next(exc);
     }
 });
 
@@ -76,11 +76,8 @@ router.put('/:id', async (req, res) => {
         }, { new: true });
         if (!result) return res.status(404).json(`Movie with the id ${req.params.id} not found.`);
         return res.json(result);
-    } catch (err) {
-        return res.status(404).json({
-            errorCode: 1,
-            message: err
-        });
+    } catch (exc) {
+        next(exc);
     }
 
 });
@@ -90,8 +87,8 @@ router.delete('/:id', async (req, res) => {
         const result = await Movie.findOneAndDelete({ _id: req.params.id });
         if (!result) return res.status(404).json(`Movie with the id ${req.params.id} not found.`);
         res.json(result);
-    } catch (err) {
-        return res.status(400).json(err.message);
+    } catch (exc) {
+        next(exc);
     }
 });
 

@@ -1,7 +1,7 @@
 
 const express = require('express');
 const bcrypt = require('bcrypt-nodejs');
-const authorization = require('../middleware/auth');
+const authorization = require('../middleware/authorization');
 const _ = require('lodash');
 const { User, isValidUser } = require('../model/user');
 
@@ -11,8 +11,8 @@ router.get('/me', authorization, async (req, res) => {
     try {
         const user = await User.findById({ _id: req.user._id }).select('-password');
         return res.json(user);
-    } catch (exc){
-        return res.status(500).json("Internal Error");
+    } catch (exc) {
+        next(exc);
     }
 });
 
@@ -41,8 +41,8 @@ router.post('/', async (req, res) => {
         let token = user.generateAuthToken();
         res.header('x-auth-token', token).json(_.pick(user, ['_id', 'name', 'email']));
 
-    } catch (err) {
-        res.status(500).json("Internal Error");
+    } catch (exc) {
+        next(exc);
     }
 });
 
