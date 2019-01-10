@@ -1,5 +1,4 @@
 const express = require('express');
-const winston = require('winston');
 const { Genre, isValidGenre } = require('../model/genre');
 const authorization = require('../middleware/authorization');
 const admin = require('../middleware/admin');
