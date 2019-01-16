@@ -1,0 +1,7 @@
+{"message":"ayeeee","stack":"Error: ayeeee\n    at Object.<anonymous> (C:\\Users\\User\\Desktop\\node-api-genre-movie\\index.js:15:7)\n    at Module._compile (module.js:653:30)\n    at Object.Module._extensions..js (module.js:664:10)\n    at Module.load (module.js:566:32)\n    at tryModuleLoad (module.js:506:12)\n    at Function.Module._load (module.js:498:3)\n    at Function.Module.runMain (module.js:694:10)\n    at startup (bootstrap_node.js:204:16)\n    at bootstrap_node.js:625:3","level":"error","timestamp":"2019-01-16T10:38:41.935Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-01-16T10:48:05.372Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-01-16T10:52:33.784Z"}
+{"level":"info","message":"Server is running on port 2000...","timestamp":"2019-01-16T10:59:15.240Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-01-16T10:59:16.282Z"}
+{"level":"info","message":"Server is running on port 2000...","timestamp":"2019-01-16T11:03:32.555Z"}
+{"level":"info","message":"Connected to MongoDB...","timestamp":"2019-01-16T11:03:33.603Z"}
